@@ -38,6 +38,7 @@ package com.everythingflex.air.managers
     import mx.rpc.events.FaultEvent;
     import mx.rpc.events.ResultEvent;
     import mx.rpc.http.HTTPService;
+    import mx.core.Application;
     
     public class UpdateManager
     {
@@ -112,11 +113,13 @@ package com.everythingflex.air.managers
                 return true;
             }
             if((currentVersion != version.@version)&&version.@forceUpdate == true){
-                getUpdate();
+                Alert.show("There is an required update available,\nplease click Yes to " + 
+                           "get it now, or No to cancel and close the application. \n\nDetails:\n" + version.@message, 
+                         "Choose Yes or No", 3, null, alertClickHandlerForce);
             }else if(currentVersion != version.@version){
                 Alert.show("There is an update available,\nwould you like to " + 
                            "get it now? \n\nDetails:\n" + version.@message, 
-                         "Choose Yes or No", 3, null, alertClickHandler);
+                         "Choose Yes or No", 3, null, alertClickHandlerChoice);
             }else{
                 Alert.show("There are no new updates available", "NOTICE");
             }
@@ -131,11 +134,13 @@ package com.everythingflex.air.managers
         private function testVersion(event:ResultEvent):void{
             version = XML(event.result);
             if((currentVersion != version.@version)&&version.@forceUpdate == true){
-                getUpdate();
+                Alert.show("There is an required update available,\nplease click Yes to " + 
+                           "get it now, or No to cancel and close the application. \n\nDetails:\n" + version.@message, 
+                         "Choose Yes or No", 3, null, alertClickHandlerForce);
             }else if(currentVersion != version.@version){
                 Alert.show("There is an update available,\nwould you like to " + 
                            "get it now? \n\nDetails:\n" + version.@message, 
-                         "Choose Yes or No", 3, null, alertClickHandler);
+                         "Choose Yes or No", 3, null, alertClickHandlerChoice);
 
             }
         } 
@@ -149,9 +154,20 @@ package com.everythingflex.air.managers
         }
         /**
 		* @private
-        * handle the user's Alert window decission
+        * handle the user's Alert Force window decission
         */
-        private function alertClickHandler(event:CloseEvent):void {
+        private function alertClickHandlerForce(event:CloseEvent):void {
+            if (event.detail==Alert.YES){
+                getUpdate();
+            } else {
+            	mx.core.Application.application.nativeWindow.close();
+            }
+        }
+        /**
+		* @private
+        * handle the user's Alert Choice window decission
+        */
+        private function alertClickHandlerChoice(event:CloseEvent):void {
             if (event.detail==Alert.YES){
                 getUpdate();
             }
