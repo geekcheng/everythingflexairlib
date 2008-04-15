@@ -34,11 +34,11 @@ package com.everythingflex.air.managers
     import flash.utils.ByteArray;
     
     import mx.controls.Alert;
+    import mx.core.Application;
     import mx.events.CloseEvent;
     import mx.rpc.events.FaultEvent;
     import mx.rpc.events.ResultEvent;
     import mx.rpc.http.HTTPService;
-    import mx.core.Application;
     
     public class UpdateManager
     {
@@ -105,9 +105,9 @@ package com.everythingflex.air.managers
         *  test the currentVersion against the remote version file and
         *  either alert     the user of
         *  an update available or force the update, if no update available, 
-        *  alert user
+        *  alert user when showAlert is true
         */
-        public function checkForUpdate():Boolean{
+        public function checkForUpdate(showAlert:Boolean=true):Boolean{
             if(version  ==  null){
                 this.loadRemoteFile();
                 return true;
@@ -121,7 +121,7 @@ package com.everythingflex.air.managers
                            "get it now? \n\nDetails:\n" + version.@message, 
                          "Choose Yes or No", 3, null, alertClickHandlerChoice);
             }else{
-                Alert.show("There are no new updates available", "NOTICE");
+                if(showAlert)Alert.show("There are no new updates available", "NOTICE");
             }
             return true;
         }
