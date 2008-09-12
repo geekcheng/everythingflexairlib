@@ -107,14 +107,14 @@ package com.everythingflex.air.managers
         *  shows toolTip message (Windows Only)
         *  bounces the dock icon (Mac Only)
         */
-    	public function startAlert(message:String="",alertType:String=""):void{
+    	public function startAlert(message:String="Alert",alertType:String=""):void{
 	       	IconManager.ALERT_TIMER = new Timer(500,0);
 	       	IconManager.ALERT_TIMER.addEventListener(TimerEvent.TIMER,changeIcon)
 	       	IconManager.ALERT_TIMER.start();
 	       	if(NativeApplication.supportsSystemTrayIcon){
 	       		SystemTrayIcon(NativeApplication.nativeApplication.icon).tooltip = message;
 	       	}
-	       	if(NativeApplication.supportsDockIcon && alertType == NotificationType.CRITICAL){
+	       	if(NativeApplication.supportsDockIcon){
 	       		DockIcon(NativeApplication.nativeApplication.icon).bounce(alertType);
 	       	}
        	} 	
