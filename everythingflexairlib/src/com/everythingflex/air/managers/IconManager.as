@@ -22,6 +22,7 @@ SOFTWARE.
 */
 package com.everythingflex.air.managers
 {
+	import flash.desktop.DockIcon;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.NotificationType;
 	import flash.desktop.SystemTrayIcon;
@@ -47,11 +48,6 @@ package com.everythingflex.air.managers
 		private var alteredSysDockIconBitmaps:Array = new Array();
 		/**
         *  @private
-        *  stores the alertType, defaults to NotificationType.CRITICAL
-        */
-		private var alertType:String = NotificationType.CRITICAL;
-		/**
-        *  @private
         *  used as an indicator to determine which state of icon to display
         */
 		private var _count:int;	
@@ -64,11 +60,9 @@ package com.everythingflex.air.managers
         *  Constructor.
         */
 		public function IconManager(sysDockIconBitmaps:Array,
-									alteredSysDockIconBitmaps:Array=null,
-									alertType:String="critical") {
+									alteredSysDockIconBitmaps:Array=null) {
 			this.sysDockIconBitmaps = sysDockIconBitmaps;
 			this.alteredSysDockIconBitmaps = alteredSysDockIconBitmaps;
-			this.alertType = alertType;
 			handleIcons();
 		}
 		/**
@@ -109,14 +103,19 @@ package com.everythingflex.air.managers
     	}
     	/**
         *  @public
-        *  starts an alert
+        *  starts an alert 
+        *  shows toolTip message (Windows Only)
+        *  bounces the dock icon (Mac Only)
         */
-    	public function startAlert(message:String="Alert"):void{
+    	public function startAlert(message:String="Alert",alertType:String=""):void{
 	       	IconManager.ALERT_TIMER = new Timer(500,0);
 	       	IconManager.ALERT_TIMER.addEventListener(TimerEvent.TIMER,changeIcon)
 	       	IconManager.ALERT_TIMER.start();
 	       	if(NativeApplication.supportsSystemTrayIcon){
 	       		SystemTrayIcon(NativeApplication.nativeApplication.icon).tooltip = message;
+	       	}
+	       	if(NativeApplication.supportsDockIcon && alertType == NotificationType.CRITICAL){
+	       		DockIcon(NativeApplication.nativeApplication.icon).bounce(alertType);
 	       	}
        	} 	
        	/**
