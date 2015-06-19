@@ -1,0 +1,1 @@
+These free components and classes will help with your development of AIR applications. EverythingFlexAIR1.swc includes the ContextWindow, AlertWindow, NativeAlertWindow, SuperWindow, ConnectionManager, and UpdateManager classes.
